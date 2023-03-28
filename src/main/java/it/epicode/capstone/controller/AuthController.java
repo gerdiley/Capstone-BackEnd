@@ -22,6 +22,7 @@ import it.epicode.capstone.repo.ProfileRepo;
 import it.epicode.capstone.repo.RoleRepo;
 import it.epicode.capstone.repo.UserRepo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,17 +51,29 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    	
+    	
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        String jwt = jwtUtils.generateJwtToken(auth);
+        
 
         UserDetailsImpl user = (UserDetailsImpl) auth.getPrincipal();
+        
+        User u = ur.findByUsername(((UserDetailsImpl)auth.getPrincipal()).getUsername());
+        
+        if(u.isActive()) {
+        	String jwt = jwtUtils.generateJwtToken(auth);
+            List<String> roles = user.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
 
-        List<String> roles = user.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
-
-        return ResponseEntity.ok(new LoginResponse(jwt,user.getUsername(), roles, user.getExpirationTime()));
+            return ResponseEntity.ok(new LoginResponse(jwt,user.getUsername(), roles, user.getExpirationTime()));
+        } else
+        {
+        	return (ResponseEntity<?>)ResponseEntity.badRequest();
+        }
+        
+        
     }
 
     @PostMapping("/auth/signup")
@@ -75,6 +88,7 @@ public class AuthController {
         user.setRoleList(roles);
         user.setActive(true);
         user.setPassword(pe.encode(user.getPassword()));
+        user.setRegistrationDate(LocalDate.now());
         
         Profile p = new Profile();
         pr.save(p);

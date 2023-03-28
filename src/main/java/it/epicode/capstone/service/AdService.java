@@ -59,6 +59,10 @@ public class AdService {
 		return ar.findTops();
 	}
 	
+	public List<Ad> getFavourites(int ProfileId){
+		return ar.findFavouritesByProfileId(ProfileId);
+	}
+	
 
 	
 }

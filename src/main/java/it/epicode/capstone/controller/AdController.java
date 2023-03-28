@@ -225,4 +225,14 @@ public class AdController {
         ar.save(a);
 		return new ResponseEntity<> (a, HttpStatus.CREATED);
 	}
+	
+	// GET FAVOURITES BY PROFILE ID
+	@GetMapping("/ads/like/{id_profile}")
+	public List<Ad> getFavourites(@PathVariable int id_profile){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        
+        User u = us.findByUsername(currentPrincipalName);
+		return as.getFavourites(u.getProfile().getId());
+	}
 }

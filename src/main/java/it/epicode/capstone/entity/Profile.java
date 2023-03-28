@@ -51,6 +51,7 @@ public class Profile {
 	@OneToMany
 	@JsonBackReference
 	private List<Review> reviews;
+
 	
 //	@ManyToMany (cascade = CascadeType.ALL)
 //	@JoinTable(
