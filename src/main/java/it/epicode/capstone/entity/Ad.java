@@ -18,6 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -58,7 +61,8 @@ public class Ad {
 //	)
 //	private Set<ImageModel> productImages;
 	
-	@ManyToMany (cascade = CascadeType.ALL)
+	@ManyToMany (fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinTable(
 			name = "ads_likes",
 			joinColumns = @JoinColumn(name="ad_id"),

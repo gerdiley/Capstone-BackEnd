@@ -235,4 +235,19 @@ public class AdController {
         User u = us.findByUsername(currentPrincipalName);
 		return as.getFavourites(u.getProfile().getId());
 	}
+	
+	//	DELETE FAVOURITE BY PROFILE ID AND AD ID
+	@DeleteMapping("ads/like/{id_ad}")
+	public ResponseEntity<?> removeLike(@PathVariable int id_ad){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User u = us.findByUsername(currentPrincipalName);
+        as.removeFavourite(u.getId(), id_ad);
+        
+        
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
 }

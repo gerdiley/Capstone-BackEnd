@@ -2,9 +2,12 @@ package it.epicode.capstone.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -33,7 +36,7 @@ public interface AdRepo extends JpaRepository<Ad, Integer> {
 	
 	@Query(
 			nativeQuery = true,
-			value = "SELECT * FROM ads ORDER BY ads.likes DESC LIMIT 3")
+			value = "SELECT * FROM ads ORDER BY ads.likes DESC LIMIT 4")
 	List<Ad> findTops();
 	
 	@Query(
@@ -47,6 +50,16 @@ public interface AdRepo extends JpaRepository<Ad, Integer> {
 	List<Ad> findFavouritesByProfileId(@Param("p") int profileId);
 	
 	
+	@Modifying
+	@Transactional
+	@Query(value = "DELETE FROM ads_likes "
+					+ "WHERE profile_id = :p "
+					+ "AND "
+					+ "ad_id = :a",
+					countQuery = "SELECT 1",
+		nativeQuery = true)
+			
+	void deleteFavouriteByProfileIdAndAdId(@Param("p") int profileId, @Param("a") int adId);
 	
 	
 }

@@ -91,6 +91,7 @@ public class AuthController {
         user.setRegistrationDate(LocalDate.now());
         
         Profile p = new Profile();
+        p.setImg("https://cdn-icons-png.flaticon.com/512/149/149071.png");
         pr.save(p);
         
         user.setProfile(p);
@@ -105,6 +106,7 @@ public class AuthController {
         return ur.findAll();
     }
     
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{id}")
     public ResponseEntity<User> switchStatus(@RequestBody User user, @PathVariable int id) {
     	User u = ur.findById(id).get();

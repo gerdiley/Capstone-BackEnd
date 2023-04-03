@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.epicode.capstone.entity.Message;
+import it.epicode.capstone.entity.Notification;
 import it.epicode.capstone.entity.Review;
 import it.epicode.capstone.entity.User;
 import it.epicode.capstone.repo.MessageRepo;
+import it.epicode.capstone.repo.NotificationRepo;
 import it.epicode.capstone.service.MessageService;
 import it.epicode.capstone.service.UserService;
 
@@ -35,6 +37,8 @@ public class MessageController {
 	MessageRepo mr;
 	@Autowired
 	UserService us;
+	@Autowired
+	NotificationRepo nr;
 	
 	//	MESSAGGI INVIATI DALL'UTENTE LOGGATO ALL'UTENTE SPECIFICATO
 	@GetMapping("/sent")
@@ -77,6 +81,14 @@ public class MessageController {
         message.setDate(LocalDate.now());
        
         mr.save(message);
+        
+        Notification n = new Notification();
+        n.setTitle(message.getText());
+        n.setMessage(message);
+        n.setRecipient(u.get());
+        
+        nr.save(n);
+        
         
         return new ResponseEntity<> (message, HttpStatus.CREATED);
 	}

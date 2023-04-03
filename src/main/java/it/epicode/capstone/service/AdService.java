@@ -48,7 +48,7 @@ public class AdService {
 	}
 	
 	public List<Ad> findByUsername(String username){
-		return ar.findByUsername(username);
+		return ar.findByUsername(username); 
 	}
 	
 	public List<Ad> findByCategory(String category){
@@ -63,6 +63,9 @@ public class AdService {
 		return ar.findFavouritesByProfileId(ProfileId);
 	}
 	
+	public void removeFavourite(int profileId, int ad_id) {
+		ar.deleteFavouriteByProfileIdAndAdId(profileId, ad_id);
+	}
 
 	
 }
