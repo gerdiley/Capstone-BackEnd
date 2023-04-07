@@ -24,9 +24,7 @@ public class User {
     private String fullname;
     private String username;
     private String password;
-//    private String email;
     private boolean active;
-    private LocalDate lastAccess;
    
     private LocalDate registrationDate;
     
@@ -36,6 +34,7 @@ public class User {
     @OneToOne
     private Profile profile;
     
+    private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

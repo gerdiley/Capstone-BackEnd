@@ -29,13 +29,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "reviews")
-public class Review {
+public class Review { 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String title;
 	private String description;
 	private double stars;
+	private LocalDate date;
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;

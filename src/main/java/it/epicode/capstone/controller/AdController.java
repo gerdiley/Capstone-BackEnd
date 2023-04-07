@@ -68,45 +68,7 @@ public class AdController {
         
 		return new ResponseEntity<> (ad, HttpStatus.CREATED);
 	}
-//	@PostMapping(value= "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//	public ResponseEntity<?> addAd(@RequestPart("ad") Ad ad,
-//									@RequestPart("imageFile") MultipartFile[] file){
-//		
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		String currentPrincipalName = authentication.getName();
-//		
-//		ad.setUser(us.findByUsername(currentPrincipalName));
-//		
-//		// Ad a = ar.save(ad);
-//		
-//		
-//		try {
-//		Set<ImageModel> images =	uploadImage(file);
-//		ad.setProductImages(images);
-//		Ad a = ar.save(ad);
-//		return new ResponseEntity<> (ad, HttpStatus.CREATED);
-//		} catch(Exception e) {
-//			System.out.println(e.getMessage());
-//			return null;
-//		}
-//		
-//	}
-//	
-//	public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
-//		Set<ImageModel> imageModels = new HashSet<>();
-//		for(MultipartFile file: multipartFiles) {
-//			ImageModel imageModel = new ImageModel(
-//					file.getOriginalFilename(),
-//					file.getContentType(),
-//					file.getBytes()
-//					);
-//			imageModels.add(imageModel);
-//			
-//		}
-//		
-//		return imageModels;
-//	}
-	
+
 	//------------ GET ADS ----------------
 	
 	@GetMapping("/ads")
@@ -173,6 +135,8 @@ public class AdController {
 	
 	//******************* FILTERS **************	
 	
+	
+	
 	//-------------------FILTER BY TITLE-----------
 	@GetMapping("/ads/title")
 	public List<Ad> filterByname(@RequestParam String title){
@@ -189,6 +153,11 @@ public class AdController {
 	@GetMapping("/ads/category")
 	public List<Ad> findByCategory(@RequestParam String category){
 		return as.findByCategory(category);
+	}
+	// -------------------FILTER BY CITY------
+	@GetMapping("/ads/city")
+	public List<Ad> findByCity(@RequestParam String city){
+		return as.getByCity(city);
 	}
 	//-------------------- FILTER TOPS --------------
 	

@@ -61,5 +61,12 @@ public interface AdRepo extends JpaRepository<Ad, Integer> {
 			
 	void deleteFavouriteByProfileIdAndAdId(@Param("p") int profileId, @Param("a") int adId);
 	
+	@Query( nativeQuery = true,
+			value = "SELECT * "
+			+ "FROM ads "
+			+ "INNER JOIN users ON ads.user_id = users.id "
+			+ "INNER JOIN addresses ON users.address_id = addresses.id "
+			+ "WHERE addresses.city = :c")
+	List<Ad> findByCity(@Param("c") String city);
 	
 }

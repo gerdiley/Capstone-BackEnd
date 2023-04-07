@@ -41,29 +41,30 @@ public class MessageController {
 	NotificationRepo nr;
 	
 	//	MESSAGGI INVIATI DALL'UTENTE LOGGATO ALL'UTENTE SPECIFICATO
-	@GetMapping("/sent")
-	public List<Message> getSentMessages(@RequestParam int rec_id){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        // logged user        
-        User currentUser = us.findByUsername(currentPrincipalName);
-        
-       return mr.findByRecipientSenderId(currentUser.getId(), rec_id );
+//	@GetMapping("/sent")
+//	public List<Message> getSentMessages(@RequestParam int rec_id){
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentPrincipalName = authentication.getName();
+//        // logged user        
+//        User currentUser = us.findByUsername(currentPrincipalName);
+//        
+//       return mr.findByRecipientSenderId(currentUser.getId(), rec_id );
        
-	}
+//	}
 	
 //	MESSAGGI RICEVUTI DALL'UTENTE LOGGATO DA parte dell'UTENTE SPECIFICATO
-	@GetMapping("/received")
-	public List<Message> getReceivedMessages(@RequestParam int sender_id){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentPrincipalName = authentication.getName();
-		// logged user        
-		User currentUser = us.findByUsername(currentPrincipalName);
-		
-		return mr.findByRecipientSenderId(sender_id, currentUser.getId() );
-		
-	}
+//	@GetMapping("/received")
+//	public List<Message> getReceivedMessages(@RequestParam int sender_id){
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		String currentPrincipalName = authentication.getName();
+//		// logged user        
+//		User currentUser = us.findByUsername(currentPrincipalName);
+//		
+//		return mr.findByRecipientSenderId(sender_id, currentUser.getId() );
+//		
+//	}
 	
+//	//----------------- SEND A MESSAGE -------------------
 	
 	@PostMapping("/{recipient_id}")
 	public ResponseEntity<?> sendMessage(@RequestBody Message message, @PathVariable int recipient_id){
@@ -92,6 +93,8 @@ public class MessageController {
         
         return new ResponseEntity<> (message, HttpStatus.CREATED);
 	}
+	
+//	----------------- GET ALL MESSAGES ----------------------
 	
 	@GetMapping("/all")
     public List<Message> getAllMessages(@RequestParam int rec_id){

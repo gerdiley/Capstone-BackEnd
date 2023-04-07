@@ -1,5 +1,6 @@
 package it.epicode.capstone.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,7 @@ public class ReviewsController {
         
         
         review.setUser(currentUser);
+        review.setDate(LocalDate.now());
         
         List<Review> reviews = u.get().getProfile().getReviews();
         reviews.add(review);

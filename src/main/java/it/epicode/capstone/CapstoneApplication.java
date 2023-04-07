@@ -6,37 +6,45 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import it.epicode.capstone.entity.Profile;
 import it.epicode.capstone.entity.Role;
 import it.epicode.capstone.entity.User;
+import it.epicode.capstone.repo.ProfileRepo;
 import it.epicode.capstone.repo.RoleRepo;
 import it.epicode.capstone.repo.UserRepo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class JwtApplication implements CommandLineRunner {
+public class CapstoneApplication implements CommandLineRunner {
 
 	@Autowired
 	RoleRepo rp;
 
 	@Autowired
 	UserRepo ur;
+	
+	@Autowired
+	ProfileRepo pr;
 
 	@Autowired
 	PasswordEncoder pe;
 
 	public static void main(String[] args) {
-		SpringApplication.run(JwtApplication.class, args);
+		SpringApplication.run(CapstoneApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
 
+// ONLY FOR INIZIALIZING THE ADMIN USER
+		
 //			List<Role> roles = initRole();
 //			initUser(roles);   
 		
-//		initAdmin();
+
 //
 	}
 
@@ -59,30 +67,22 @@ public class JwtApplication implements CommandLineRunner {
 
 	private User initUser(List<Role> roles) {
 		User user = new User();
+		Profile prof = new Profile();
+		pr.save(prof);
 		user.setFullname("Mario Rossi");
 		user.setUsername("mrossi");
 		user.setPassword(pe.encode("test"));
 		user.setRoleList(roles);
 		user.setActive(true);
+		user.setRegistrationDate(LocalDate.now());
+		user.setProfile(prof);
+		
 		ur.save(user);
-
+		
 		return user;
 	}
 	
-	private void initAdmin() {
-		
-        List<Role> roles = new ArrayList<>();
-        roles.add(rp.findById(1).get());
-		
-		User user = new User();
-		user.setFullname("admin");
-		user.setUsername("admin");
-		user.setPassword(pe.encode("test"));
-		user.setRoleList(roles);
-		user.setActive(true);
-		ur.save(user);
-		
-	}
+
 
 
 }

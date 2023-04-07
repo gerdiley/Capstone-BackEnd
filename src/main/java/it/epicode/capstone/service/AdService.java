@@ -66,6 +66,9 @@ public class AdService {
 	public void removeFavourite(int profileId, int ad_id) {
 		ar.deleteFavouriteByProfileIdAndAdId(profileId, ad_id);
 	}
-
+	
+	public List<Ad> getByCity(String city){
+		return ar.findByCity(city);
+	}
 	
 }

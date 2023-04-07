@@ -1,6 +1,7 @@
 package it.epicode.capstone.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,8 @@ public class ProfileController {
 	@Autowired
 	AddressRepo ar;
 	
+	// -------------------- ADD A PROFILE -----------------------
+	
 	@PostMapping("")
 	public ResponseEntity<?> addProfile(@RequestBody Profile profile){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -59,6 +62,7 @@ public class ProfileController {
         return new ResponseEntity<> (profile, HttpStatus.CREATED);
 	}
 	
+	// ------------------ GET AUTHENTICATED USER -------------------	
 	@GetMapping("/username")
 	public User getProfile(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,13 +70,20 @@ public class ProfileController {
 		return us.findByUsername(currentPrincipalName);
 	}
 	
+	// ------------------ GET USER BY USERNAME -------------------
 	@GetMapping("/username1")
 	public User getProfileByUsername(@RequestParam String username){
 
 		return us.findByUsername(username);
 	}
 	
-	// edit profile	
+	// ------------------ GET USER BY ID -------------------
+	@GetMapping("/{id}")
+	public Optional<User> getUserById(@PathVariable int id) {
+		return ur.findById(id);
+	}
+	
+	// ------------------ EDIT PROFILE -------------------
 	
 	@PutMapping("/edit/{id}")
 	public ResponseEntity<?> editProfile(@PathVariable int id , @RequestBody User user){
@@ -82,7 +93,6 @@ public class ProfileController {
         User u = us.findByUsername(currentPrincipalName);
         
         // edit username
-        
         if(user.getUsername() == null | user.getUsername() == "") {
         	u.setUsername(u.getUsername());
         } else {
@@ -97,10 +107,14 @@ public class ProfileController {
         u.getProfile().setImg(user.getProfile().getImg());
         }
         
-        // edit address
+        // edit email
+        if(user.getEmail() == null| user.getEmail() == "") {
+        	u.setEmail(u.getEmail());
+        } else {
+        u.setEmail(user.getEmail());
+        }
         
-        
-        
+        // edit address        
         if(user.getAddress() == null) {
         	u.setAddress(u.getAddress());
         } else
@@ -114,12 +128,7 @@ public class ProfileController {
             ar.save(a);
             
         	u.setAddress(a);
-        	
-        	
         }
-        
-        
-        
         
         ur.save(u);
         

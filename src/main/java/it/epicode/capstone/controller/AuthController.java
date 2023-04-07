@@ -49,6 +49,9 @@ public class AuthController {
     @Autowired
     ProfileRepo pr;
 
+    
+    // ------------- LOGIN -----------------------
+    
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     	
@@ -75,16 +78,15 @@ public class AuthController {
         
         
     }
+    
+    
+    // ----------------------   SIGN UP --------------------
 
     @PostMapping("/auth/signup")
     public ResponseEntity<User> signUp(@RequestBody User user) {
         List<Role> roles = new ArrayList<>();
         roles.add(rp.findById(2).get());
-//        Role role = new Role();
-//        role.setName("ROLE_USER");
-//        rp.save(role);
-//        roles.add(role);
-        
+
         user.setRoleList(roles);
         user.setActive(true);
         user.setPassword(pe.encode(user.getPassword()));
@@ -96,15 +98,21 @@ public class AuthController {
         
         user.setProfile(p);
         
+        
         User u = ur.save(user);
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+    
+    // ------------------- GET ALL USERS -----------------------
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return ur.findAll();
     }
+    
+    
+    // ------------------- BAN USER ---------------------------
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{id}")
@@ -123,17 +131,6 @@ public class AuthController {
     	
     }
     
-    
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello World";
-    }
-  
-    @GetMapping("/ciao")
-    public String ciao() {
-        return "Ciao World";
-    }
 
 
 }

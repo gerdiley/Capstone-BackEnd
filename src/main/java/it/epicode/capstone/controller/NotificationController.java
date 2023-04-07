@@ -34,6 +34,8 @@ public class NotificationController {
 	@Autowired
 	UserService us;
 	
+	// ---------------- GET UNREAD NOTIFICATIONS ------------	
+	
 	@GetMapping("/unread")
 	public List<Notification> getUnreadNotification(){
 		
@@ -44,6 +46,8 @@ public class NotificationController {
         
 		return ns.findUnread(currentUser.getId());
 	}
+	
+	//------------------- SWITCH READ NOTIFICATION	----------
 	
 	@PutMapping("/{notification_id}")
 	public ResponseEntity<Notification> switchNotification(@PathVariable int notification_id ,@RequestBody Notification notification){
